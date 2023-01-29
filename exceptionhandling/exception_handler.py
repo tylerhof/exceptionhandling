@@ -2,6 +2,7 @@ import traceback
 from abc import abstractmethod, ABC
 
 from expression import Ok, Error
+from expression.core.result import bind
 
 
 class ExceptionHandler(ABC):
@@ -23,6 +24,17 @@ class IdentityPolicy(ExceptionHandler):
 
     def get(self, parser, object_to_parse):
         return parser(object_to_parse)
+
+class Unwrap(ExceptionHandler):
+
+    def __init__(self):
+        super().__init__()
+
+    def get(self, parser, object_to_parse):
+        if (isinstance(object_to_parse, Ok)):
+            return bind(object_to_parse, parser)
+        else:
+            return parser(object_to_parse)
 
 class Safe(ExceptionHandler):
 

@@ -2,7 +2,7 @@ from abc import ABC,abstractmethod
 
 from expression import Result, Ok
 
-from exception_handler import ExceptionHandler, Safe
+from exceptionhandling.exception_handler import ExceptionHandler, Safe
 
 
 class Functor(ABC):
@@ -11,10 +11,10 @@ class Functor(ABC):
         self.policy = policy
 
     def __call__(self, input):
-        return self.policy(self.parse, self.wrap(input))
+        return self.policy(self.apply, self.wrap(input))
 
     @abstractmethod
-    def parse(self, input):
+    def apply(self, input):
         pass
 
     def wrap(self, input):
