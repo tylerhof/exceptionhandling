@@ -32,7 +32,7 @@ class Unwrap(ExceptionHandler):
 
     def get(self, parser, object_to_parse):
         if (isinstance(object_to_parse, Ok)):
-            return bind(object_to_parse, parser)
+            return parser(object_to_parse.value)
         else:
             return parser(object_to_parse)
 
