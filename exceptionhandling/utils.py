@@ -11,7 +11,7 @@ class ForEach(Functor):
         self.element_Functor = element_Functor
 
     def apply(self, input):
-        return seq.of_iterable(object_to_parse).map(self.element_Functor)
+        return seq.of_iterable(input).map(self.element_Functor)
 
 class Identity(Functor):
 
