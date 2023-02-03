@@ -18,8 +18,8 @@ class Identity(Functor):
     def __init__(self, policy: ExceptionHandler = IdentityPolicy()):
         super().__init__(policy)
 
-    def apply(self, object_to_parse):
-        return object_to_parse
+    def apply(self, input):
+        return input
 
 class ToList(Functor):
 
@@ -27,8 +27,8 @@ class ToList(Functor):
         super().__init__(policy)
         self.list_Functor = list_Functor
 
-    def apply(self, object_to_parse):
-        return [Functor(object_to_parse) for Functor in self.list_Functor]
+    def apply(self, input):
+        return [Functor(input) for Functor in self.list_Functor]
 
 class ToDictionary(Functor):
 
@@ -36,5 +36,5 @@ class ToDictionary(Functor):
         super().__init__(policy)
         self.Functor_dict = Functor_dict
 
-    def apply(self, object_to_parse):
-        return {key(object_to_parse) : value(object_to_parse) for (key, value) in self.Functor_dict.items()}
+    def apply(self, input):
+        return {key(input) : value(input) for (key, value) in self.Functor_dict.items()}

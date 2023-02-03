@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exceptionhandling"
-version = "0.0.13"
+version = "0.0.14"
 description = "Handle exceptions using monoids"
 readme = "README.md"
 authors = [{ name = "Tyler Hofmeister", email = "tyler.hofmeister@gmail.com" }]
@@ -32,4 +32,4 @@ Homepage = "https://github.com/tylerhof/exceptionhandling"
 # twine upload -r testpypi dist/*
 #
 # Note to install in another project run:
-# pip install --index-url https://test.pypi.org/simple/ exceptionhandling
+# pip install --upgrade --index-url https://test.pypi.org/simple/ exceptionhandling
