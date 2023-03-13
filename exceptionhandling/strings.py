@@ -1,3 +1,5 @@
+import json
+
 from exceptionhandling.functor import Functor
 
 class Decode(Functor):
@@ -6,5 +8,11 @@ class Decode(Functor):
         super().__init__()
         self.decode = decode
 
-    def parse(self, object_to_parse):
+    def apply(self, object_to_parse, **kwargs):
         return object_to_parse.decode(self.decode)
+
+
+class Json(Functor):
+
+    def apply(self, object_to_parse, **kwargs):
+        return json.loads(object_to_parse)
