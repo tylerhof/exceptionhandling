@@ -7,8 +7,8 @@ from exceptionhandling.functor import Functor
 
 class Compose(Functor):
 
-    def __init__(self, policy: ExceptionHandler = IdentityPolicy(), *args):
-        super().__init__(policy)
+    def __init__(self, *args):
+        super().__init__(IdentityPolicy())
         self.functors = list(args)
     def apply(self, input, **kwargs):
         return compose(*self.functors)
