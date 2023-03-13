@@ -1,7 +1,7 @@
 from expression import compose
 from expression.collections import seq
 
-from exceptionhandling.exception_handler import ExceptionHandler, AllList, IdentityPolicy, AllDict
+from exceptionhandling.exception_handler import ExceptionHandler, AllList, IdentityPolicy, AllDict, Safe
 from exceptionhandling.functor import Functor
 from functools import partial
 
@@ -40,6 +40,15 @@ class ToList(Functor):
 
     def apply(self, input, **kwargs):
         return [Functor(input) for Functor in self.list_Functor]
+
+class Filter(Functor):
+
+    def __init__(self, predicate, policy: ExceptionHandler = Safe()):
+        super().__init__(policy)
+        self.predicate = predicate
+
+    def apply(self, input, **kwargs):
+        return [element for element in input if self.predicate(element, **kwargs)]
 
 class ToDictionary(Functor):
 

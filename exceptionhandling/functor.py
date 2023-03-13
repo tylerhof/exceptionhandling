@@ -11,7 +11,7 @@ class Functor(ABC):
         self.policy = policy
 
     def __call__(self, input, **kwargs):
-        return self.policy(self.apply, self.wrap(input))
+        return self.policy(self.apply, self.wrap(input), **kwargs)
 
     @abstractmethod
     def apply(self, input, **kwargs):
