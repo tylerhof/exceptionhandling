@@ -8,7 +8,10 @@ class Access(Functor):
         self.variable_name = variable_name
 
     def apply(self, object_to_parse, **kwargs):
-        return object_to_parse.__dict__[self.variable_name]
+        if type(object_to_parse) is dict:
+            return object_to_parse[self.variable_name]
+        else:
+            return object_to_parse.__dict__[self.variable_name]
 
 class AccessIndex(Functor):
 
