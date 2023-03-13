@@ -3,7 +3,7 @@ from expression.collections import seq
 
 from exceptionhandling.exception_handler import ExceptionHandler, AllList, IdentityPolicy, AllDict
 from exceptionhandling.functor import Functor
-
+from functools import partial
 
 class Compose(Functor):
 
@@ -11,9 +11,8 @@ class Compose(Functor):
         super().__init__(IdentityPolicy())
         self.functors = list(args)
     def apply(self, input, **kwargs):
-        functor_list = [lambda x : f(x, **kwargs) for f in self.functors]
+        functor_list= [partial(f, **kwargs) for f in self.functors]
         return compose(*functor_list)(input)
-
 
 
 class ForEach(Functor):
