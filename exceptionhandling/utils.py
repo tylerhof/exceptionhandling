@@ -58,3 +58,13 @@ class ToDictionary(Functor):
 
     def apply(self, input, **kwargs):
         return {key(input) : value(input) for (key, value) in self.Functor_dict.items()}
+
+
+class Lambda(Functor):
+
+    def __init__(self, lambda_to_use, policy: ExceptionHandler = Safe()):
+        super().__init__(policy)
+        self.lambda_to_use = lambda_to_use
+
+    def apply(self, input, **kwargs):
+        return self.lambda_to_use(input, **kwargs)
