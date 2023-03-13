@@ -7,7 +7,7 @@ class Access(Functor):
         super().__init__()
         self.variable_name = variable_name
 
-    def apply(self, object_to_parse):
+    def apply(self, object_to_parse, **kwargs):
         return object_to_parse.__dict__[self.variable_name]
 
 class AccessIndex(Functor):
@@ -16,7 +16,7 @@ class AccessIndex(Functor):
         super().__init__()
         self.index = index
 
-    def apply(self, object_to_parse):
+    def apply(self, object_to_parse, **kwargs):
         return object_to_parse[self.index]
 
 class Constant(Functor):
@@ -25,5 +25,5 @@ class Constant(Functor):
         super().__init__()
         self.value = value
 
-    def apply(self, object_to_parse):
+    def apply(self, object_to_parse, **kwargs):
         return self.value

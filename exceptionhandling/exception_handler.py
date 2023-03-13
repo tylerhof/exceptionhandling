@@ -2,18 +2,17 @@ import traceback
 from abc import abstractmethod, ABC
 
 from expression import Ok, Error
-from expression.core.result import bind
 
 
 class ExceptionHandler(ABC):
     def __init__(self):
         pass
 
-    def __call__(self, parser, object_to_parse):
-        return self.get(parser, object_to_parse)
+    def __call__(self, parser, object_to_parse, **kwargs):
+        return self.get(parser, object_to_parse, **kwargs)
 
     @abstractmethod
-    def get(self, parser, object_to_parse):
+    def get(self, parser, object_to_parse, **kwargs):
         pass
 
 
@@ -22,27 +21,27 @@ class IdentityPolicy(ExceptionHandler):
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        return parser(object_to_parse)
+    def get(self, parser, object_to_parse, **kwargs):
+        return parser(object_to_parse, **kwargs)
 
 class Unwrap(ExceptionHandler):
 
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
+    def get(self, parser, object_to_parse, **kwargs):
         if (isinstance(object_to_parse, Ok)):
-            return parser(object_to_parse.value)
+            return parser(object_to_parse.value, **kwargs)
         else:
-            return parser(object_to_parse)
+            return parser(object_to_parse, **kwargs)
 
 class Safe(ExceptionHandler):
 
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        return object_to_parse.map(parser)
+    def get(self, parser, object_to_parse, **kwargs):
+        return object_to_parse.map(parser, **kwargs)
 
 
 class Truthy(ExceptionHandler):
@@ -50,8 +49,8 @@ class Truthy(ExceptionHandler):
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        return object_to_parse.map(parser).map(self.check)
+    def get(self, parser, object_to_parse, **kwargs):
+        return object_to_parse.map(parser, **kwargs).map(self.check)
 
     def check(self, inner_object):
         if inner_object:
@@ -64,8 +63,8 @@ class AllDict(ExceptionHandler):
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        dict = parser(object_to_parse)
+    def get(self, parser, object_to_parse, **kwargs):
+        dict = parser(object_to_parse, **kwargs)
         if (all(map(lambda x: x.is_ok(), dict.values()))):
             return Ok({key.default_value(): value.default_value() for (key, value) in dict.items()})
         else:
@@ -79,8 +78,8 @@ class AnyList(ExceptionHandler):
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        return Ok([object for object in object_to_parse.map(parser) if (object.is_ok())])
+    def get(self, parser, object_to_parse, **kwargs):
+        return Ok([object for object in object_to_parse.map(parser, **kwargs) if (object.is_ok())])
 
 
 class AllList(ExceptionHandler):
@@ -88,8 +87,8 @@ class AllList(ExceptionHandler):
     def __init__(self):
         super().__init__()
 
-    def get(self, parser, object_to_parse):
-        list = object_to_parse.map(parser)
+    def get(self, parser, object_to_parse, **kwargs):
+        list = object_to_parse.map(parser, **kwargs)
         return list.map(self.all)
 
     def all(self, list_to_parse):
