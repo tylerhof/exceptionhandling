@@ -65,8 +65,8 @@ class AllDict(ExceptionHandler):
 
     def get(self, parser, object_to_parse, **kwargs):
         dict = parser(object_to_parse, **kwargs)
-        if (all(map(lambda x: x.is_ok(), dict.values()))):
-            return Ok({key.default_value(): value.default_value() for (key, value) in dict.items()})
+        if all(k.is_ok() and v.is_ok() for (k, v) in dict.items()):
+            return Ok({k.value: v.value for (k, v) in dict.items()})
         else:
             return Error('/n'.join([str(key) + " : " + str(value) for (key, value) in dict.items() if
                                       not (key.is_ok() and value.is_ok())]))

@@ -2,7 +2,8 @@ import unittest
 
 from expression import Ok
 
-from exceptionhandling.utils import Filter, Lambda
+from exceptionhandling.access import Constant
+from exceptionhandling.utils import Filter, Lambda, ToDictionary
 from tests.test_utils import FunctorTest
 
 
@@ -12,6 +13,10 @@ class UtilsTest(unittest.TestCase):
                          ['a', 'b', 'c', 'd'], Ok(['b', 'c']))
     def test_lambda(self):
         FunctorTest.test(self, Lambda(lambda x : x * 2), 'blah', Ok('blahblah'))
+
+    def test_to_dict(self):
+        FunctorTest.test(self, ToDictionary({Constant('a') : Constant(1),
+                                             Constant(2) : Constant('b')}), '', Ok({'a' : 1, 2 : 'b'}))
 
 if __name__ == '__main__':
     unittest.main()
