@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exceptionhandling"
-version = "0.0.17"
+version = "0.0.18"
 description = "Handle exceptions using monoids"
 readme = "README.md"
 authors = [{ name = "Tyler Hofmeister", email = "tyler.hofmeister@gmail.com" }]

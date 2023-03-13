@@ -11,7 +11,8 @@ class Compose(Functor):
         super().__init__(IdentityPolicy())
         self.functors = list(args)
     def apply(self, input, **kwargs):
-        return compose(*self.functors)
+        functor_list = [lambda x : f(x, **kwargs) for f in self.functors]
+        return compose(*functor_list)(input)
 
 
 
