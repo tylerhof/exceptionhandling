@@ -3,7 +3,6 @@ import unittest
 from expression import Ok
 
 from exceptionhandling.access import Access
-from exceptionhandling.utils import Filter, Lambda
 from tests.test_utils import FunctorTest
 
 class ExampleObject():

@@ -1,5 +1,6 @@
 import traceback
 from abc import abstractmethod, ABC
+from functools import partial
 
 from expression import Ok, Error
 
@@ -41,7 +42,8 @@ class Safe(ExceptionHandler):
         super().__init__()
 
     def get(self, parser, object_to_parse, **kwargs):
-        return object_to_parse.map(parser, **kwargs)
+        curried = partial(parser, **kwargs)
+        return object_to_parse.map(curried)
 
 
 class Truthy(ExceptionHandler):

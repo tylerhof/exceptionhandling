@@ -1,4 +1,4 @@
 class FunctorTest():
     @staticmethod
-    def test(test, functor, input, expected):
-        test.assertEqual(expected, functor(input))
+    def test(test, functor, input, expected, **kwargs):
+        test.assertEqual(expected, functor(input, **kwargs))
