@@ -1,5 +1,6 @@
 from expression import compose
 from expression.collections import seq
+from joblib import Parallel, delayed
 
 from exceptionhandling.exception_handler import ExceptionHandler, AllList, IdentityPolicy, AllDict, Safe
 from exceptionhandling.functor import Functor
@@ -23,6 +24,16 @@ class ForEach(Functor):
 
     def apply(self, input, **kwargs):
         return seq.of_iterable(input).map(self.element_Functor)
+
+class ForEachParallel(Functor):
+
+    def __init__(self, element_Functor, n_jobs = 4, policy: ExceptionHandler = AllList()):
+        super().__init__(policy)
+        self.element_Functor = element_Functor
+        self.n_jobs = n_jobs
+
+    def apply(self, input, **kwargs):
+        return Parallel(self.n_jobs)(delayed(self.element_Functor)(i) for i in seq.of_iterable(input))
 
 class Identity(Functor):
 
